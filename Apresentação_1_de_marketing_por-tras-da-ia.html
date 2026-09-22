@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Por Trás da IA — Marketing H2H</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#070b16; --bg2:#0c1326; --card:#101a33; --card2:#0d1730;
+  --line:#1e2c4d; --cyan:#22d3ee; --violet:#8b5cf6; --blue:#3b82f6;
+  --text:#eef2ff; --sub:#93a0c4; --muted:#5b6788;
+  --grad: linear-gradient(120deg,var(--cyan),var(--violet));
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;}
+html{scroll-padding-top:env(safe-area-inset-top,0px);}
+html,body{height:100%;}
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:'Inter',sans-serif; overflow:hidden;
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(139,92,246,.13), transparent 40%),
+    radial-gradient(circle at 85% 80%, rgba(34,211,238,.10), transparent 40%),
+    linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size:auto,auto,42px 42px,42px 42px;
+  background-position:0 0,0 0,0 0,0 0;
+}
+h1,h2,h3{font-family:'Space Grotesk',sans-serif; margin:0;}
+.deck{height:100%; width:100%; position:relative;}
+.slide{
+  position:absolute; inset:0; display:flex; flex-direction:column; justify-content:center;
+  padding:min(6vw,60px) min(8vw,90px); opacity:0; pointer-events:none; transition:opacity .35s ease;
+}
+.slide.active{opacity:1; pointer-events:auto;}
+.kicker{
+  display:inline-flex; align-items:center; gap:8px; width:fit-content;
+  font-size:12px; letter-spacing:2px; font-weight:600; color:var(--cyan);
+  text-transform:uppercase; margin-bottom:14px; opacity:.9;
+}
+.kicker::before{content:'';width:8px;height:8px;border-radius:2px;background:var(--grad);}
+.slide h1{font-size:clamp(28px,4.2vw,54px); line-height:1.12; font-weight:700;}
+.slide h1 .g{background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent;}
+.subtitle{color:var(--sub); font-size:clamp(14px,1.5vw,19px); margin-top:14px; max-width:820px; line-height:1.5;}
+.slide-num{position:absolute; bottom:26px; left:min(8vw,90px); font-size:12px; color:var(--muted); font-family:'Space Grotesk',sans-serif;}
+.body-area{margin-top:min(4vh,36px);}
+
+/* generic components */
+.grid{display:grid; gap:18px;}
+.g2{grid-template-columns:1fr 1fr;}
+.g3{grid-template-columns:repeat(3,1fr);}
+.card{
+  background:linear-gradient(160deg,var(--card),var(--card2)); border:1px solid var(--line);
+  border-radius:16px; padding:22px 22px; position:relative;
+}
+.card h3{font-size:16px; font-weight:600; margin-bottom:8px; color:var(--text);}
+.card p{font-size:13.5px; color:var(--sub); line-height:1.55; margin:0;}
+.icon{
+  width:42px;height:42px;border-radius:12px; display:flex;align-items:center;justify-content:center;
+  background:rgba(34,211,238,.10); border:1px solid rgba(34,211,238,.25); margin-bottom:14px; font-size:19px;
+}
+.badge{display:inline-block; font-size:11px; color:var(--muted); border:1px solid var(--line); padding:5px 12px; border-radius:20px; margin-top:16px;}
+
+/* Slide 1 - title */
+.s1-top{display:flex; align-items:center; gap:10px; font-size:12px; letter-spacing:2px; color:var(--sub); text-transform:uppercase; font-weight:600;}
+.s1-title{font-size:clamp(40px,7vw,88px); margin-top:22px;}
+.team{display:flex; flex-wrap:wrap; gap:10px; margin-top:34px;}
+.team span{font-size:13px; color:var(--sub); background:var(--card); border:1px solid var(--line); padding:7px 14px; border-radius:20px;}
+
+/* context vs */
+.vs-wrap{display:flex; align-items:center; gap:28px; margin-top:10px;}
+.vs-card{flex:1; padding:28px; border-radius:18px;}
+.vs-card.util{background:linear-gradient(160deg,rgba(59,130,246,.14),var(--card2)); border:1px solid rgba(59,130,246,.35);}
+.vs-card.sec{background:linear-gradient(160deg,rgba(139,92,246,.14),var(--card2)); border:1px solid rgba(139,92,246,.35);}
+.vs-label{font-size:13px; letter-spacing:2px; font-weight:700; margin-bottom:10px;}
+.vs-x{font-size:34px; color:var(--muted); font-weight:300;}
+
+/* flow */
+.flow{display:flex; align-items:stretch; gap:8px; margin-top:20px; flex-wrap:wrap;}
+.flow-step{flex:1; min-width:120px; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px 14px; text-align:center; position:relative;}
+.flow-step .n{font-size:11px; color:var(--cyan); font-weight:700; font-family:'Space Grotesk',sans-serif;}
+.flow-step .t{font-size:13.5px; margin-top:6px; font-weight:600;}
+.flow-arrow{align-self:center; color:var(--muted); font-size:18px;}
+
+/* quote */
+.quote-wrap{display:flex; align-items:center; justify-content:center; height:100%; text-align:center;}
+.quote{font-family:'Space Grotesk',sans-serif; font-size:clamp(24px,3.6vw,44px); font-weight:600; max-width:1000px; line-height:1.3;}
+.quote .g{background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent;}
+
+/* stats */
+.stat-grid{display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:14px;}
+.stat-num{font-family:'Space Grotesk',sans-serif; font-size:clamp(40px,6vw,72px); font-weight:700; background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent;}
+.stat-desc{color:var(--sub); font-size:14px; margin-top:8px; line-height:1.5;}
+.stat-src{color:var(--muted); font-size:11.5px; margin-top:10px;}
+
+/* two-col list */
+.col-list{display:flex; flex-direction:column; gap:12px;}
+.col-list .row{display:flex; gap:10px; align-items:flex-start; font-size:14px; color:var(--sub);}
+.col-list .row::before{content:'▸'; color:var(--cyan); flex-shrink:0;}
+.col-title{font-size:14px; font-weight:700; color:var(--text); margin-bottom:12px;}
+
+/* matrix */
+.matrix{display:grid; grid-template-columns:1fr auto 1fr auto 1fr; gap:10px; align-items:center; margin-top:18px;}
+.matrix .cell{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 16px; font-size:13.5px; text-align:center;}
+.matrix .arrow{color:var(--muted); text-align:center;}
+.matrix .head{font-size:11px; letter-spacing:1.5px; color:var(--cyan); font-weight:700; background:none; border:none;}
+
+/* hypotheses */
+.hyp-row{display:flex; align-items:center; gap:16px; padding:13px 0; border-bottom:1px solid var(--line);}
+.hyp-row:last-child{border-bottom:none;}
+.hyp-tag{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:13px; color:var(--bg); background:var(--grad); border-radius:8px; padding:5px 10px; flex-shrink:0;}
+.hyp-text{font-size:14.5px; color:var(--sub);}
+
+/* timeline */
+.timeline{display:flex; align-items:center; gap:4px; margin-top:26px; overflow-x:auto;}
+.tl-step{flex-shrink:0; min-width:100px; text-align:center;}
+.tl-dot{width:14px;height:14px;border-radius:50%; background:var(--card); border:2px solid var(--muted); margin:0 auto 10px;}
+.tl-step.done .tl-dot{background:var(--grad); border-color:transparent;}
+.tl-step .tl-t{font-size:12px; color:var(--sub); line-height:1.3;}
+.tl-line{flex-shrink:0; width:24px; height:2px; background:var(--line); margin-top:-24px;}
+
+/* nav */
+.nav{position:fixed; bottom:0; left:0; right:0; display:flex; align-items:center; justify-content:center; gap:16px; padding:14px 0 calc(14px + env(safe-area-inset-bottom,0px)); z-index:10;}
+.nav button{background:var(--card); border:1px solid var(--line); color:var(--text); width:38px;height:38px;border-radius:50%; cursor:pointer; font-size:16px; display:flex; align-items:center; justify-content:center;}
+.nav button:hover{border-color:var(--cyan);}
+.dots{display:flex; gap:6px;}
+.dot{width:6px;height:6px;border-radius:50%; background:var(--line); transition:.2s;}
+.dot.on{background:var(--cyan); width:18px; border-radius:3px;}
+.progress{position:fixed; top:0; left:0; height:3px; background:var(--grad); z-index:10; transition:width .35s ease;}
+
+@media (max-width:720px){
+  .g2,.g3{grid-template-columns:1fr;}
+  .vs-wrap{flex-direction:column;}
+  .vs-x{transform:rotate(90deg);}
+  .matrix{grid-template-columns:1fr; }
+  .matrix .arrow{transform:rotate(90deg); padding:2px 0;}
+  .stat-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div class="progress" id="progress" style="width:6.6%"></div>
+<div class="deck" id="deck">
+
+<div class="slide active">
+  <div class="s1-top">Marketing H2H · UFES · Administração</div>
+  <h1 class="s1-title">Por trás <span class="g">da IA</span></h1>
+  <div class="subtitle">Segurança, confiança e controle no uso da Inteligência Artificial Generativa</div>
+  <div class="badge">Apresentação 1 · Plano de Marketing H2H — Parte I</div>
+  <div class="team">
+    <span>Ana Paula</span><span>Boris</span><span>Erick S.</span><span>Guilherme Ramos</span><span>Yasmin Rodrigues</span>
+  </div>
+  <div class="slide-num">01 / 15</div>
+</div>
+
+<div class="slide">
+  <div class="kicker">O contexto</div>
+  <h1>Quanto mais a IA facilita nossa vida,<br><span class="g">mais dados compartilhamos com ela</span></h1>
+  <div class="vs-wrap body-area">
+    <div class="vs-card util">
+      <div class="vs-label" style="color:var(--blue)">UTILIDADE</div>
+      <p style="color:var(--sub); font-size:14px; line-height:1.55;">Praticidade, rapidez e produtividade para estudar, pesquisar, criar e organizar a rotina.</p>
+    </div>
+    <div class="vs-x">×</div>
+    <div class="vs-card sec">
+      <div class="vs-label" style="color:var(--violet)">SEGURANÇA</div>
+      <p style="color:var(--sub); font-size:14px; line-height:1.55;">Incerteza sobre como os dados pessoais são coletados, armazenados e utilizados pelas plataformas.</p>
+    </div>
+  </div>
+  <div class="slide-num">02 / 15</div>
+</div>
+
+<div class="slide">
+  <div class="kicker">O problema</div>
+  <h1>As pessoas querem os benefícios da IA, mas<br><span class="g">nem sempre sabem o que acontece com seus dados</span></h1>
+  <div class="flow body-area">
+    <div class="flow-step"><div class="n">01</div><div class="t">Benefício</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><div class="n">02</div><div class="t">Uso</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><div class="n">03</div><div class="t">Dados compartilhados</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><div class="n">04</div><div class="t">Incerteza</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><div class="n">05</div><div class="t">Insegurança</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><div class="n">06</div><div class="t">Menor confiança</div></div>
+  </div>
+  <div class="subtitle" style="margin-top:26px;">O caminho do benefício ao receio: cada etapa do uso da IA aproxima o usuário de uma zona de incerteza sobre os próprios dados.</div>
+  <div class="slide-num">03 / 15</div>
+</div>
+
+<div class="slide">
+  <div class="quote-wrap">
+    <div>
+      <div class="kicker" style="justify-content:center; margin:0 auto 22px;">O nosso desafio</div>
+      <div class="quote">“Como podemos aumentar a <span class="g">sensação de segurança</span> no uso da IA generativa e, com isso, aumentar a <span class="g">confiança</span> do usuário na tecnologia?”</div>
+      <div class="subtitle" style="margin:24px auto 0; text-align:center;">A pergunta que orienta todo o projeto de Marketing H2H</div>
+    </div>
+  </div>
+  <div class="slide-num">04 / 15</div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Quem é o nosso público</div>
+  <h1>Uma geração conectada, <span class="g">prática — e atenta</span></h1>
+  <div class="grid g2 body-area">
+    <div class="card">
+      <div class="icon">👥</div>
+      <h3>Usam IA para</h3>
+      <div class="col-list" style="margin-top:10px;">
+        <div class="row">Estudar e realizar trabalhos</div>
+        <div class="row">Pesquisar e tirar dúvidas</div>
+        <div class="row">Criar conteúdos</div>
+        <div class="row">Organizar tarefas do dia a dia</div>
+      </div>
+      <div class="badge">20–35 anos · estudantes e início de carreira</div>
+    </div>
+    <div class="card" style="border-color:rgba(139,92,246,.35);">
+      <div class="icon" style="background:rgba(139,92,246,.10); border-color:rgba(139,92,246,.3);">⚠️</div>
+      <h3>Mas</h3>
+      <p>Nem sempre sabem como seus dados são coletados, armazenados e usados — e por isso hesitam em confiar plenamente.</p>
+      <p style="margin-top:12px;">Ativos e passivos no uso de IA generativa — sempre conectados às redes e às novas tecnologias.</p>
+    </div>
+  </div>
+  <div class="slide-num">05 / 15</div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Partes interessadas</div>
+  <h1>Quem participa do <span class="g">ecossistema da IA</span> generativa</h1>
+  <div class="grid g3 body-area" style="grid-template-columns:repeat(4,1fr); gap:14px;">
+    <div class="card" style="padding:16px;"><h3 style="font-size:14px;">Usuários</h3><p style="font-size:12px;">Pessoas que interagem diretamente e compartilham dados</p></div>
+    <div class="card" style="padding:16px;"><h3 style="font-size:14px;">Plataformas de IA</h3><p style="font-size:12px;">Operam os modelos e definem o uso dos dados</p></div>
+    <div class="card" style="padding:16px;"><h3 style="font-size:14px;">Empresas desenvolvedoras</h3><p style="font-size:12px;">Constroem e treinam as tecnologias de IA</p></div>
+    <div class="card" style="padding:16px;"><h3 style="font-size:14px;">Empregadores</h3><p style="font-size:12px;">Adotam IA em processos e times de trabalho</p></div>
+    <div class="card" style="padding:16px;"><h3 style="font-size:14px;">Instituições de ensino</h3><p style="font-size:12px;">Orientam o uso responsável entre estudantes</p></div>
+    <div class="card" style="padding:16px;"><h3 style="font-size:14px;">Órgãos reguladores</h3><p style="font-size:12px;">Definem normas de proteção de dados</p></div>
+    <div class="card" style="padding:16px;"><h3 style="font-size:14px;">Sociedade</h3><p style="font-size:12px;">Recebe o impacto coletivo da confiança (ou não) na IA</p></div>
+  </div>
+  <div class="slide-num">06 / 15</div>
+</div>
+
+<div class="slide">
+  <div class="kicker">As dores do público</div>
+  <h1>Três camadas de <span class="g">uma mesma insegurança</span></h1>
+  <div class="grid g3 body-area">
+    <div class="card"><div class="icon">🗄️</div><h3>Dor funcional</h3><p>“Não sei exatamente o que acontece com meus dados.”</p></div>
+    <div class="card"><div class="icon" style="background:rgba(139,92,246,.10); border-color:rgba(139,92,246,.3);">🔒</div><h3>Dor emocional</h3><p>“Tenho receio de perder o controle sobre minhas informações.”</p></div>
+    <div class="card"><div class="icon" style="background:rgba(59,130,246,.10); border-color:rgba(59,130,246,.3);">🙈</div><h3>Dor social</h3><p>“Posso deixar de usar recursos de IA por não me sentir seguro.”</p></div>
+  </div>
+  <div class="slide-num">07 / 15</div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Evidências</div>
+  <h1>Dados de referência para <span class="g">contextualizar o problema</span></h1>
+  <div class="subtitle">Dados secundários levantados em pesquisa desk — não resultam de pesquisa primária do grupo.</div>
+  <div class="stat-grid body-area">
+    <div>
+      <div class="stat-num">~50%</div>
+      <div class="stat-desc">dos usuários no mundo desconfiam da proteção de seus dados em ferramentas de IA</div>
+      <div class="stat-src">Ipsos AI Monitor 2026 — Global Advisor</div>
+    </div>
+    <div>
+      <div class="stat-num">93%</div>
+      <div class="stat-desc">dos usuários de IA, em amostra de 300 pessoas, relatam medo ligado a dilemas éticos da tecnologia</div>
+      <div class="stat-src">Alkhalifah et al., Frontiers in Psychiatry, 2024</div>
+    </div>
+  </div>
+  <div class="slide-num">08 / 15</div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Pesquisa com o público</div>
+  <h1>Próxima etapa de <span class="g">validação</span></h1>
+  <div class="subtitle">O questionário ainda não foi aplicado. Esta é a proposta metodológica para validar as dores identificadas.</div>
+  <div class="grid g2 body-area">
+    <div class="card">
+      <div class="icon">🔍</div>
+      <div class="col-title">Desenho da pesquisa</div>
+      <div class="col-list">
+        <div class="row">Público: usuários de IA generativa</div>
+        <div class="row">Foco: segurança, privacidade, confiança e controle</div>
+        <div class="row">Perguntas fechadas em escala Likert</div>
+        <div class="row">Perguntas sobre comportamento</div>
+        <div class="row">Perguntas abertas para aprofundar percepções</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="icon" style="background:rgba(139,92,246,.10); border-color:rgba(139,92,246,.3);">🎯</div>
+      <div class="col-title">O que a pesquisa vai validar</div>
+      <div class="col-list">
+        <div class="row">Se a insegurança realmente existe</div>
+        <div class="row">Quais são as principais dores</div>
+        <div class="row">Quais sentimentos aparecem</div>
+        <div class="row">Situações que mais geram preocupação</div>
+        <div class="row">O que aumentaria a sensação de segurança</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-num">09 / 15</div>
+</div>
+
+<div class="slide">
+  <div class="quote-wrap">
+    <div>
+      <div class="kicker" style="justify-content:center; margin:0 auto 22px;">Proposta de valor · hipótese inicial</div>
+      <div class="quote">Ajudar usuários de IA generativa a <span class="g">compreender, controlar e utilizar</span> seus dados com mais segurança — transformando incerteza em confiança.</div>
+      <div class="badge" style="margin:24px auto 0; display:table;">Hipótese a ser validada pela pesquisa de campo — ainda não é uma proposta final.</div>
+    </div>
+  </div>
+  <div class="slide-num">10 / 15</div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Produtos e serviços · hipóteses de solução</div>
+  <h1>Possibilidades iniciais — <span class="g">ainda a validar</span></h1>
+  <div class="grid g3 body-area">
+    <div class="card"><div class="icon">🧭</div><h3>Assistente de orientação</h3><p>Apoia o usuário a entender riscos de segurança durante o uso da IA</p></div>
+    <div class="card"><div class="icon">🔔</div><h3>Alertas de dados sensíveis</h3><p>Avisa antes do compartilhamento de informações potencialmente sensíveis</p></div>
+    <div class="card"><div class="icon">💬</div><h3>Explicações simples</h3><p>Traduz políticas de privacidade em linguagem acessível</p></div>
+    <div class="card"><div class="icon">📘</div><h3>Conteúdos educativos</h3><p>Ensina boas práticas de uso seguro da IA no dia a dia</p></div>
+    <div class="card"><div class="icon">🧾</div><h3>Guia do que compartilhar</h3><p>Orienta o que é seguro ou não compartilhar em cada contexto</p></div>
+    <div class="card"><div class="icon">🎛️</div><h3>Painel de controle</h3><p>Aumenta a percepção de controle do usuário sobre seus dados</p></div>
+  </div>
+  <div class="subtitle" style="margin-top:16px;">Hipóteses de solução — não representam produtos já existentes.</div>
+  <div class="slide-num">11 / 15</div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Conexão entre dor e solução</div>
+  <h1>Da dor identificada à <span class="g">hipótese de solução</span></h1>
+  <div class="body-area">
+    <div class="matrix">
+      <div class="cell head">DOR</div><div></div><div class="cell head">NECESSIDADE</div><div></div><div class="cell head">POSSÍVEL SOLUÇÃO</div>
+      <div class="cell">Falta de clareza</div><div class="arrow">→</div><div class="cell">Compreender o uso dos dados</div><div class="arrow">→</div><div class="cell">Explicações simples e transparentes</div>
+      <div class="cell">Medo de exposição</div><div class="arrow">→</div><div class="cell">Reduzir o risco percebido</div><div class="arrow">→</div><div class="cell">Alertas antes do compartilhamento</div>
+      <div class="cell">Perda de controle</div><div class="arrow">→</div><div class="cell">Recuperar autonomia</div><div class="arrow">→</div><div class="cell">Mecanismos de controle e gerenciamento</div>
+    </div>
+  </div>
+  <div class="slide-num">12 / 15</div>
+</div>
+
+<div class="slide">
+  <div class="kicker">O que a pesquisa precisa validar</div>
+  <h1>Hipóteses — <span class="g">ainda não são fatos comprovados</span></h1>
+  <div class="body-area" style="max-width:800px;">
+    <div class="hyp-row"><div class="hyp-tag">H1</div><div class="hyp-text">O usuário considera a IA útil, mas tem preocupações com segurança</div></div>
+    <div class="hyp-row"><div class="hyp-tag">H2</div><div class="hyp-text">A falta de clareza sobre os dados aumenta a insegurança</div></div>
+    <div class="hyp-row"><div class="hyp-tag">H3</div><div class="hyp-text">Mais sensação de controle pode estar ligada a mais confiança</div></div>
+    <div class="hyp-row"><div class="hyp-tag">H4</div><div class="hyp-text">Alguns usuários evitam compartilhar informações por receio</div></div>
+    <div class="hyp-row"><div class="hyp-tag">H5</div><div class="hyp-text">Transparência e orientação podem aumentar a sensação de segurança</div></div>
+  </div>
+  <div class="slide-num">13 / 15</div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Próximos passos</div>
+  <h1>Da validação das dores <span class="g">ao plano final</span></h1>
+  <div class="timeline body-area">
+    <div class="tl-step done"><div class="tl-dot"></div><div class="tl-t">Pesquisa</div></div>
+    <div class="tl-line"></div>
+    <div class="tl-step done"><div class="tl-dot"></div><div class="tl-t">Validação das dores</div></div>
+    <div class="tl-line"></div>
+    <div class="tl-step"><div class="tl-dot"></div><div class="tl-t">Jornada do cliente</div></div>
+    <div class="tl-line"></div>
+    <div class="tl-step"><div class="tl-dot"></div><div class="tl-t">Canais</div></div>
+    <div class="tl-line"></div>
+    <div class="tl-step"><div class="tl-dot"></div><div class="tl-t">Relacionamento</div></div>
+    <div class="tl-line"></div>
+    <div class="tl-step"><div class="tl-dot"></div><div class="tl-t">Produto / serviço</div></div>
+    <div class="tl-line"></div>
+    <div class="tl-step"><div class="tl-dot"></div><div class="tl-t">Métricas</div></div>
+    <div class="tl-line"></div>
+    <div class="tl-step"><div class="tl-dot"></div><div class="tl-t">Plano final</div></div>
+  </div>
+  <div class="subtitle" style="margin-top:30px;">Estamos na primeira etapa: validar as dores identificadas nesta apresentação.</div>
+  <div class="slide-num">14 / 15</div>
+</div>
+
+<div class="slide">
+  <div class="quote-wrap">
+    <div>
+      <div class="quote">A questão não é apenas fazer as pessoas utilizarem IA.<br><br>É fazer com que elas <span class="g">entendam, controlem e confiem</span> na forma como utilizam.</div>
+      <div class="kicker" style="justify-content:center; margin:34px auto 0;">Por trás da IA · Obrigado(a)</div>
+    </div>
+  </div>
+  <div class="slide-num">15 / 15</div>
+</div>
+
+</div>
+
+<div class="nav">
+  <button id="prev">‹</button>
+  <div class="dots" id="dots"></div>
+  <button id="next">›</button>
+</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const dotsEl = document.getElementById('dots');
+const progress = document.getElementById('progress');
+let i = 0;
+slides.forEach((_,idx)=>{
+  const d = document.createElement('div'); d.className='dot'+(idx===0?' on':'');
+  d.onclick=()=>go(idx);
+  dotsEl.appendChild(d);
+});
+const dots = dotsEl.querySelectorAll('.dot');
+function go(n){
+  if(n<0||n>=slides.length) return;
+  slides[i].classList.remove('active'); dots[i].classList.remove('on');
+  i=n;
+  slides[i].classList.add('active'); dots[i].classList.add('on');
+  progress.style.width = ((i+1)/slides.length*100)+'%';
+}
+document.getElementById('next').onclick=()=>go(i+1);
+document.getElementById('prev').onclick=()=>go(i-1);
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' ') go(i+1);
+  if(e.key==='ArrowLeft') go(i-1);
+});
+let touchX=0;
+document.addEventListener('touchstart',e=>touchX=e.touches[0].clientX);
+document.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-touchX;
+  if(dx<-50) go(i+1); if(dx>50) go(i-1);
+});
+</script>
+</body>
+</html>
