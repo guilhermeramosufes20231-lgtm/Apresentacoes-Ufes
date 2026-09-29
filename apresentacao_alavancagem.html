@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alavancagem financeira e estrutura de capital — Referencial teórico</title>
+<style>
+:root{--navy:#0B1F3A;--blue:#1F6FEB;--sky:#E8F0FD;--green:#1FA971;--gray:#5B6675;--line:#D5DCE6;--bg:#FFFFFF}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#0B1F3A;font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;color:var(--navy);overflow:hidden}
+#viewport{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#stage{width:1280px;height:720px;position:relative;transform-origin:center center;flex:none}
+.slide{position:absolute;inset:0;background:var(--bg);padding:52px 64px 56px;display:none;flex-direction:column;overflow:hidden}
+.slide.active{display:flex}
+.kicker{font-size:15px;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);font-weight:700;margin-bottom:10px}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:40px;line-height:1.15;font-weight:700;color:var(--navy)}
+h2{font-family:Georgia,"Times New Roman",serif;font-size:36px;line-height:1.15;font-weight:700;margin-bottom:6px}
+.ref{position:absolute;left:64px;right:64px;bottom:18px;font-size:12.5px;color:var(--gray);display:flex;justify-content:space-between;gap:24px}
+.body{flex:1;display:flex;margin-top:22px;min-height:0}
+.box{border:1.5px solid var(--line);border-radius:10px;padding:16px 20px;background:#fff}
+.navy{background:var(--navy);color:#fff;border-color:var(--navy)}
+.blue{background:var(--blue);color:#fff;border-color:var(--blue)}
+.sky{background:var(--sky);border-color:#C9DBF8}
+.green{background:var(--green);color:#fff;border-color:var(--green)}
+.lbl{font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;opacity:.85;margin-bottom:6px}
+.big{font-size:22px;font-weight:600;line-height:1.3}
+.arrow{width:22px;height:26px;display:block;margin:4px auto;flex:none}
+.arrow-r{width:30px;height:22px;flex:none;align-self:center;margin:0 6px}
+.center{display:flex;align-items:center;justify-content:center;text-align:center}
+.col{display:flex;flex-direction:column}
+/* slide 1 */
+.s1{flex-direction:row;padding:0}
+.s1 .left{flex:1.1;background:var(--navy);color:#fff;padding:64px 56px 56px;display:flex;flex-direction:column;justify-content:center}
+.s1 .left .kicker{color:#7FB0FF}
+.s1 h1{color:#fff;font-size:37px}
+.s1 .meta{margin-top:40px;font-size:18px;line-height:1.6;color:#C9D6EA}
+.s1 .meta b{color:#fff}
+.s1 .right{flex:.9;padding:44px 56px;display:flex;flex-direction:column;justify-content:center}
+.s1 .pair{display:flex;align-items:center;gap:10px}
+.s1 .pair .box{flex:1;text-align:center;padding:14px 8px;font-weight:700;font-size:18px}
+/* slide 2 */
+.chain{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gray);margin-top:8px}
+.chain span.c{padding:5px 12px;border-radius:20px;background:var(--sky);color:var(--navy)}
+.chain span.c.on{background:var(--blue);color:#fff}
+.s2 .body{gap:28px}
+.s2 .l{flex:1.05;display:flex;flex-direction:column;gap:18px}
+.s2 .r{flex:1;display:flex;flex-direction:column;gap:12px}
+.s2 .prob{flex:1.3;display:flex;flex-direction:column;justify-content:center}
+.s2 .prob .big{font-family:Georgia,serif;font-size:25px;font-weight:600;line-height:1.35}
+.s2 .goal .big{font-size:20px}
+.esp{display:flex;gap:18px;align-items:center;padding:12px 20px;flex:1}
+.esp .n{font-family:Georgia,serif;font-size:34px;font-weight:700;color:var(--blue);line-height:1}
+.esp p{font-size:20px;line-height:1.35}
+/* slide 3 */
+.top3{display:flex;align-items:center;gap:6px}
+.top3 .box{padding:12px 18px;font-weight:700;font-size:19px;text-align:center}
+.plus{font-size:28px;font-weight:700;color:var(--blue)}
+.tl{display:flex;align-items:stretch;margin-top:26px;flex:1;gap:0}
+.tl .step{flex:1;display:flex;flex-direction:column}
+.tl .head{font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--blue);margin-bottom:8px}
+.tl .card{flex:1;padding:16px 20px;display:flex;flex-direction:column;justify-content:flex-start}
+.tl .card h3{font-family:Georgia,serif;font-size:23px;margin-bottom:8px}
+.tl .card p{font-size:18px;line-height:1.35;color:var(--gray)}
+.po{margin-top:10px;display:flex;flex-direction:column;gap:14px;flex:1;justify-content:center}
+.po div{display:flex;align-items:center;gap:10px;padding:14px 16px;border-radius:8px;font-weight:700;font-size:18px;color:#fff}
+.po .a{background:var(--green);width:100%}.po .b{background:var(--blue);width:86%}.po .c{background:var(--navy);width:72%}
+.po i{font-style:normal;font-family:Georgia,serif;font-size:20px}
+/* slide 4 */
+.s4 .body{gap:14px;align-items:stretch}
+.side{flex:1;display:flex;flex-direction:column;justify-content:center;gap:0}
+.side .box{text-align:center;padding:12px 14px;font-size:18px;font-weight:600}
+.mid{flex:1.05;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.chip{display:inline-block;margin-top:12px;padding:8px 14px;border-radius:20px;font-size:15px;font-weight:700}
+.msg{margin-top:14px;padding:14px 22px;background:var(--sky);border-radius:10px;font-family:Georgia,serif;font-size:19px;line-height:1.35;text-align:center}
+/* slide 5 */
+.flow{display:flex;flex-direction:column;flex:1.1;gap:0}
+.flow .box{padding:13px 20px;font-weight:700;font-size:18px;text-align:center;letter-spacing:.03em}
+.flow .arrow{height:20px;width:20px;margin:2px auto}
+.notes5{flex:1;display:flex;flex-direction:column;gap:12px;padding-left:36px;justify-content:center}
+.notes5 .box{font-size:18px;line-height:1.35}
+.notes5 .box b{color:var(--blue)}
+.synth{margin-top:12px;background:var(--navy);color:#fff;padding:16px 26px;border-radius:10px;font-family:Georgia,serif;font-size:21px;line-height:1.35}
+/* UI */
+#ui{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:8px;align-items:center;background:rgba(11,31,58,.92);border:1px solid #23406b;border-radius:30px;padding:6px 12px;z-index:9;transition:opacity .3s}
+#ui button{background:none;border:1px solid #3a5a8c;color:#fff;border-radius:20px;padding:6px 14px;font-size:14px;cursor:pointer}
+#ui button:hover{background:#1F6FEB}
+#ui span{color:#C9D6EA;font-size:14px;min-width:54px;text-align:center}
+body.hide-ui #ui{opacity:0}
+/* print */
+@page{size:1280px 720px;margin:0}
+@media print{
+ html,body{background:#fff;overflow:visible;height:auto}
+ #ui{display:none!important}
+ #viewport{position:static;display:block}
+ #stage{transform:none!important;width:1280px;height:auto}
+ .slide{display:flex!important;position:relative;inset:auto;width:1280px;height:720px;page-break-after:always;break-after:page;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ .slide:last-child{page-break-after:auto;break-after:auto}
+ *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="dn" viewBox="0 0 22 26"><path d="M11 0v20M3 13l8 10 8-10" fill="none" stroke="#1F6FEB" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="rt" viewBox="0 0 30 22"><path d="M0 11h26M17 2l10 9-10 9" fill="none" stroke="#1F6FEB" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ud" viewBox="0 0 22 26"><path d="M11 3v20M3 10l8-8 8 8M3 16l8 8 8-8" fill="none" stroke="#1F6FEB" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+
+<div id="viewport"><div id="stage">
+
+<!-- SLIDE 1 -->
+<section class="slide s1 active">
+  <div class="left">
+    <div class="kicker">Projeto de Pesquisa · Referencial teórico</div>
+    <h1>Alavancagem financeira e estrutura de capital como estratégias de financiamento para empresas de tecnologia: Riscos e oportunidades no mercado de capitais</h1>
+    <div class="meta"><b>Guilherme Ramos</b><br>Administração · Universidade Federal do Espírito Santo<br>Disciplina de Projeto de Pesquisa · Prof. Cesar Augusto Tureta</div>
+  </div>
+  <div class="right">
+    <div class="pair"><div class="box sky">CAPITAL PRÓPRIO</div><svg class="arrow-r" style="width:26px"><use href="#ud" transform="rotate(90 13 11)"/></svg><div class="box sky">CAPITAL DE TERCEIROS</div></div>
+    <svg class="arrow"><use href="#dn"/></svg>
+    <div class="box navy center big" style="justify-content:center">ESTRUTURA DE CAPITAL</div>
+    <svg class="arrow"><use href="#dn"/></svg>
+    <div class="box blue center big">ALAVANCAGEM FINANCEIRA</div>
+    <svg class="arrow"><use href="#dn"/></svg>
+    <div style="display:flex;align-items:center;gap:10px"><div class="box green center big" style="flex:1;font-size:18px;padding:12px 6px">RISCOS</div><b style="font-size:26px;color:var(--gray)">×</b><div class="box green center big" style="flex:1;font-size:18px;padding:12px 6px">OPORTUNIDADES</div></div>
+  </div>
+</section>
+
+<!-- SLIDE 2 -->
+<section class="slide s2">
+  <div class="kicker">Do tema ao referencial</div>
+  <h2>Problema de pesquisa e objetivos</h2>
+  <div class="chain"><span class="c">Tema</span>→<span class="c on">Problema</span>→<span class="c on">Objetivos</span>→<span class="c">Referencial teórico</span></div>
+  <div class="body">
+    <div class="l">
+      <div class="box navy prob"><div class="lbl">Problema de pesquisa</div><div class="big">“O que influencia a tomada de capital de terceiros e alavancagem financeira de empresas de tecnologia e quais os riscos e oportunidades nesses negócios?”</div></div>
+      <div class="box sky goal"><div class="lbl" style="color:var(--blue)">Objetivo geral</div><div class="big">“Identificar e analisar os principais fatores para a alavancagem financeira em negócios de tecnologia nas empresas e seus impactos.”</div></div>
+    </div>
+    <div class="r">
+      <div class="lbl" style="color:var(--blue);margin:4px 0 0">Objetivos específicos</div>
+      <div class="box esp"><div class="n">01</div><p>Realizar pesquisa em empresas de tecnologia do mercado.</p></div>
+      <div class="box esp"><div class="n">02</div><p>Análise de relatórios de gestão e demonstrações financeiras.</p></div>
+      <div class="box esp"><div class="n">03</div><p>Comparação dos resultados das pesquisas e projeções do mercado de capitais com as teorias basilares de finanças.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 3 -->
+<section class="slide s3">
+  <div class="kicker">Referencial teórico · 1</div>
+  <h2>Estrutura de capital: como as empresas financiam seus ativos?</h2>
+  <div class="top3" style="margin-top:14px">
+    <div class="box sky">CAPITAL PRÓPRIO</div><span class="plus">+</span><div class="box sky">CAPITAL DE TERCEIROS</div>
+    <svg class="arrow-r"><use href="#rt"/></svg><div class="box navy">ESTRUTURA DE CAPITAL</div>
+  </div>
+  <div class="tl">
+    <div class="step"><div class="head">Teoria convencional</div>
+      <div class="box card"><h3>Estrutura ótima</h3><p>Combinação de capital próprio e de terceiros que eleva o valor da empresa e minimiza o WACC.</p>
+        <div class="center" style="flex:1;padding-top:12px"><svg width="280" height="110" viewBox="0 0 200 78"><path d="M8 14 Q100 110 192 14" fill="none" stroke="#1F6FEB" stroke-width="3"/><circle cx="100" cy="53" r="6" fill="#1FA971"/><text x="100" y="74" text-anchor="middle" font-size="13" font-weight="700" fill="#0B1F3A">menor WACC</text></svg></div></div></div>
+    <svg class="arrow-r"><use href="#rt"/></svg>
+    <div class="step"><div class="head">Modigliani &amp; Miller (1958)</div>
+      <div class="box card"><h3>Irrelevância</h3><p>Em condições ideais, a estrutura de capital seria irrelevante para o valor da empresa.</p>
+        <div class="center" style="flex:1;padding-top:12px"><svg width="280" height="110" viewBox="0 0 200 78"><line x1="10" y1="36" x2="190" y2="36" stroke="#1F6FEB" stroke-width="3"/><text x="100" y="66" text-anchor="middle" font-size="13" font-weight="700" fill="#0B1F3A">valor não varia</text></svg></div></div></div>
+    <svg class="arrow-r"><use href="#rt"/></svg>
+    <div class="step"><div class="head">Pecking Order Theory</div>
+      <div class="box card"><h3>Hierarquia</h3><p>Preferência por fontes de financiamento em ordem:</p>
+        <div class="po"><div class="a"><i>1º</i> Recursos internos</div><div class="b"><i>2º</i> Dívida</div><div class="c"><i>3º</i> Capital próprio</div></div></div></div>
+  </div>
+  <div class="ref"><span>Modigliani &amp; Miller (1958) · Myers &amp; Majluf (1984) · Brito, Corrar &amp; Batistella (2007) · Iquiapaza, Amaral &amp; Araujo (2008)</span></div>
+</section>
+
+<!-- SLIDE 4 -->
+<section class="slide s4">
+  <div class="kicker">Referencial teórico · 2</div>
+  <h2>Alavancagem financeira: oportunidade ou risco?</h2>
+  <div class="body">
+    <div class="side">
+      <div class="box sky">CAPITAL DE TERCEIROS</div><svg class="arrow"><use href="#dn"/></svg>
+      <div class="box sky">MAIOR CAPACIDADE DE INVESTIMENTO</div><svg class="arrow"><use href="#dn"/></svg>
+      <div class="box green">POTENCIAL DE RETORNO</div>
+      <div style="text-align:center"><span class="chip sky" style="border:1.5px solid var(--green);color:#137a52">Benefício fiscal: juros dedutíveis no IR</span></div>
+    </div>
+    <div class="mid">
+      <svg width="330" height="300" viewBox="0 0 330 300">
+        <g transform="rotate(-4 165 60)"><line x1="35" y1="60" x2="295" y2="60" stroke="#0B1F3A" stroke-width="5" stroke-linecap="round"/>
+        <line x1="35" y1="60" x2="35" y2="112" stroke="#1F6FEB" stroke-width="2"/><line x1="295" y1="60" x2="295" y2="112" stroke="#1F6FEB" stroke-width="2"/>
+        <path d="M5 112h60a30 22 0 0 1-60 0z" fill="#1FA971"/><path d="M265 112h60a30 22 0 0 1-60 0z" fill="#0B1F3A"/>
+        </g>
+        <polygon points="165,52 150,250 180,250" fill="#0B1F3A"/><rect x="115" y="250" width="100" height="10" rx="5" fill="#0B1F3A"/>
+        <circle cx="165" cy="58" r="10" fill="#1F6FEB"/>
+        <rect x="80" y="160" width="170" height="52" rx="10" fill="#1F6FEB"/>
+        <text x="165" y="182" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">ALAVANCAGEM</text><text x="165" y="201" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">FINANCEIRA</text>
+        <text x="35" y="160" text-anchor="middle" font-size="15" font-weight="700" fill="#137a52">OPORTUNIDADE</text><text x="295" y="160" text-anchor="middle" font-size="15" font-weight="700" fill="#0B1F3A">RISCO</text><text x="165" y="290" text-anchor="middle" font-size="16" font-weight="700" fill="#5B6675">OPORTUNIDADE ↔ RISCO</text>
+      </svg>
+    </div>
+    <div class="side">
+      <div class="box sky">JUROS + AMORTIZAÇÕES + COMPROMISSOS FINANCEIROS</div><svg class="arrow"><use href="#dn"/></svg>
+      <div class="box sky">PRESSÃO SOBRE O FLUXO DE CAIXA</div><svg class="arrow"><use href="#dn"/></svg>
+      <div class="box navy">RISCO FINANCEIRO</div>
+      <div style="text-align:center"><span class="chip sky" style="border:1.5px solid var(--navy)">Maior risco de falência</span></div>
+    </div>
+  </div>
+  <div class="msg" style="margin-bottom:18px">A alavancagem não deve ser analisada apenas pelo potencial de retorno, mas também pela capacidade da empresa de suportar suas obrigações financeiras.</div>
+  <div class="ref"><span>Referencial do projeto de pesquisa · Brito, Corrar &amp; Batistella (2007)</span></div>
+</section>
+
+<!-- SLIDE 5 -->
+<section class="slide s5">
+  <div class="kicker">Referencial teórico · 3</div>
+  <h2>Alavancagem em empresas de tecnologia</h2>
+  <div class="body">
+    <div class="flow">
+      <div class="box sky">CRESCIMENTO</div><svg class="arrow"><use href="#dn"/></svg>
+      <div class="box sky">NECESSIDADE DE INVESTIMENTO</div><svg class="arrow"><use href="#dn"/></svg>
+      <div class="box sky">NECESSIDADE DE FINANCIAMENTO</div><svg class="arrow"><use href="#dn"/></svg>
+      <div class="box navy">ESTRUTURA DE CAPITAL</div><svg class="arrow"><use href="#dn"/></svg>
+      <div class="box blue">ALAVANCAGEM</div><svg class="arrow"><use href="#dn"/></svg>
+      <div class="box green">RISCOS × OPORTUNIDADES</div>
+    </div>
+    <div class="notes5">
+      <div class="box"><b>Estrutura mais sólida</b><br>tende a ser financiada majoritariamente por capital próprio.</div>
+      <div class="box"><b>Empresas em expansão</b><br>podem usar mais dívida externa no curto prazo.</div>
+      <div class="box"><b>Fluxo de caixa operacional</b><br>que não acompanha o investimento pode elevar o endividamento.</div>
+    </div>
+  </div>
+  <div class="synth">A alavancagem pode ampliar a capacidade de financiamento, mas também aumenta as obrigações financeiras e a exposição ao risco.</div>
+  <div class="ref"><span>Sant’Ana &amp; Silva (2015) · Brito, Corrar &amp; Batistella (2007)</span></div>
+</section>
+
+</div></div>
+
+<div id="ui">
+  <button id="prev" title="Voltar (←)">← Voltar</button><span id="num">1 / 5</span><button id="next" title="Avançar (→)">Avançar →</button>
+  <button id="fs">Tela cheia</button><button id="pdf">EXPORTAR / IMPRIMIR PDF</button>
+</div>
+
+<script>
+(function(){
+  var slides=[].slice.call(document.querySelectorAll('.slide')),i=0,stage=document.getElementById('stage');
+  function show(n){i=Math.max(0,Math.min(slides.length-1,n));slides.forEach(function(s,k){s.classList.toggle('active',k===i)});document.getElementById('num').textContent=(i+1)+' / '+slides.length;location.hash='#'+(i+1)}
+  function fit(){var s=Math.min(innerWidth/1280,(innerHeight)/720);stage.style.transform='scale('+s+')'}
+  addEventListener('resize',fit);fit();
+  document.getElementById('prev').onclick=function(){show(i-1)};
+  document.getElementById('next').onclick=function(){show(i+1)};
+  document.getElementById('pdf').onclick=function(){window.print()};
+  document.getElementById('fs').onclick=function(){var d=document.documentElement;if(!document.fullscreenElement){(d.requestFullscreen||d.webkitRequestFullscreen).call(d)}else{document.exitFullscreen()}};
+  addEventListener('keydown',function(e){
+    if(['ArrowRight','PageDown',' '].indexOf(e.key)>-1){e.preventDefault();show(i+1)}
+    else if(['ArrowLeft','PageUp'].indexOf(e.key)>-1){e.preventDefault();show(i-1)}
+    else if(e.key==='f'||e.key==='F'){document.getElementById('fs').click()}
+    else if(e.key==='h'||e.key==='H'){document.body.classList.toggle('hide-ui')}
+    else if(e.key==='Home'){show(0)}else if(e.key==='End'){show(slides.length-1)}
+  });
+  var h=parseInt(location.hash.slice(1),10);if(h)show(h-1);
+})();
+</script>
+</body>
+</html>
