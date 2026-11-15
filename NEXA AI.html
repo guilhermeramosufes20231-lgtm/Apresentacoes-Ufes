@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NEXA AI — IA aplicada aos negócios</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#080B14;--sf:#101827;--bl:#287BFF;--cy:#00E5FF;--pu:#865BFF;--tx:#F4F7FF;--mu:#929DB2;--ln:rgba(146,157,178,.18);color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:Manrope,system-ui,sans-serif;line-height:1.55;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+.w{max-width:1120px;margin:0 auto;padding:0 20px}
+section{padding:84px 0}
+h1,h2,h3{line-height:1.12;margin:0}
+h1{font-size:clamp(2.1rem,5.4vw,3.7rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:clamp(1.6rem,3.6vw,2.4rem);font-weight:800;letter-spacing:-.015em}
+h3{font-size:1.15rem}
+p{margin:0}.mu{color:var(--mu)}
+.g{background:linear-gradient(90deg,var(--cy),var(--bl) 55%,var(--pu));-webkit-background-clip:text;background-clip:text;color:transparent}
+.eye{color:var(--cy);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:10px}
+nav{position:fixed;top:0;left:0;right:0;z-index:20;padding-top:env(safe-area-inset-top,0px);background:rgba(8,11,20,.78);backdrop-filter:blur(14px);border-bottom:1px solid var(--ln)}
+nav .w{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{font-weight:800;letter-spacing:.06em}.logo b{color:var(--cy)}
+.links{display:flex;gap:22px;font-size:.9rem;color:var(--mu)}
+.links a:hover{color:var(--tx)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:12px;font:700 .92rem Manrope,sans-serif;border:1px solid var(--ln);background:transparent;color:var(--tx);cursor:pointer;transition:.25s}
+.btn:hover{transform:translateY(-2px);border-color:var(--cy)}
+.pri{background:linear-gradient(90deg,var(--bl),var(--pu));border:0;box-shadow:0 8px 28px -10px var(--bl)}
+.sm{padding:8px 16px;font-size:.85rem}
+.hero{padding-top:150px;position:relative}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(600px 380px at 85% 20%,rgba(134,91,255,.22),transparent),radial-gradient(520px 340px at 10% 0,rgba(40,123,255,.18),transparent);pointer-events:none}
+.hg{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;position:relative}
+.hero p.sub{font-size:1.08rem;margin:20px 0 30px;max-width:540px}
+.row{display:flex;flex-wrap:wrap;gap:12px}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:18px;padding:24px;transition:.3s;position:relative;overflow:hidden}
+.card::after{content:"";position:absolute;inset:0;background:radial-gradient(240px 160px at var(--x,50%) var(--y,0),rgba(0,229,255,.12),transparent);opacity:0;transition:.3s;pointer-events:none}
+.card:hover{border-color:rgba(0,229,255,.45);transform:translateY(-4px)}.card:hover::after{opacity:1}
+.grid{display:grid;gap:18px;margin-top:36px}
+.g3{grid-template-columns:repeat(3,1fr)}
+.num{font-size:.8rem;color:var(--cy);font-weight:800;letter-spacing:.1em}
+ul.ck{list-style:none;padding:0;margin:14px 0 20px;display:grid;gap:7px;font-size:.92rem;color:var(--mu)}
+ul.ck li::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--cy);margin-right:10px;box-shadow:0 0 8px var(--cy)}
+.tag{display:inline-block;font-size:.72rem;padding:3px 10px;border-radius:99px;border:1px solid var(--ln);color:var(--cy);margin-bottom:10px}
+.ex{font-size:.7rem;color:var(--mu);float:right}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
+.chip{padding:8px 16px;border-radius:99px;border:1px solid var(--ln);background:none;color:var(--mu);font:600 .85rem Manrope,sans-serif;cursor:pointer;transition:.2s}
+.chip.on,.chip:hover{color:var(--tx);border-color:var(--cy);background:rgba(0,229,255,.08)}
+.mock{height:110px;border-radius:12px;background:linear-gradient(135deg,#0c1424,#16223a);border:1px solid var(--ln);margin-bottom:16px;display:flex;align-items:flex-end;gap:7px;padding:14px}
+.mock i{flex:1;border-radius:4px 4px 0 0;background:linear-gradient(var(--cy),var(--bl));opacity:.85}
+.pl{padding:0;display:grid;gap:10px}
+.tl{display:flex;gap:10px;margin-top:36px;flex-wrap:wrap}
+.tl button{flex:1;min-width:130px;text-align:left;padding:16px;border-radius:14px;background:var(--sf);border:1px solid var(--ln);color:var(--mu);font:600 .9rem Manrope,sans-serif;cursor:pointer;transition:.25s}
+.tl button b{display:block;color:var(--cy);font-size:.75rem}
+.tl button.on{color:var(--tx);border-color:var(--cy);box-shadow:0 0 24px -10px var(--cy)}
+#tlt{margin-top:18px;min-height:56px}
+.comm{background:linear-gradient(180deg,transparent,rgba(134,91,255,.08),transparent)}
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.app{background:var(--sf);border:1px solid var(--ln);border-radius:18px;padding:14px;box-shadow:0 30px 80px -30px var(--pu)}
+.app .bar{display:flex;gap:6px;margin-bottom:12px}.app .bar i{width:9px;height:9px;border-radius:50%;background:var(--ln)}
+.ag{display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:.78rem}
+.ag div{background:#0c1424;border:1px solid var(--ln);border-radius:10px;padding:12px}
+.ag b{display:block;color:var(--cy);margin-bottom:4px}
+.gov{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:30px}
+.gov div{border-left:2px solid var(--pu);padding:6px 0 6px 16px}
+.gov b{display:block}.gov span{color:var(--mu);font-size:.88rem}
+form{display:grid;gap:12px;margin-top:28px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+input,select,textarea{width:100%;padding:13px 14px;border-radius:12px;border:1px solid var(--ln);background:#0c1424;color:var(--tx);font:500 .95rem Manrope,sans-serif}
+input:focus,select:focus,textarea:focus{outline:0;border-color:var(--cy)}
+.modal{position:fixed;inset:0;z-index:50;background:rgba(4,6,12,.8);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:20px}
+.modal.open{display:flex}
+.mb{background:var(--sf);border:1px solid var(--ln);border-radius:20px;max-width:700px;width:100%;padding:22px;max-height:90vh;overflow:auto}
+.vid{aspect-ratio:16/9;border-radius:12px;background:#0c1424;border:1px dashed var(--ln);display:flex;align-items:center;justify-content:center;text-align:center;color:var(--mu);font-size:.9rem;margin:14px 0;padding:16px}
+.vid iframe,.vid video{width:100%;height:100%;border:0;border-radius:12px}
+footer{border-top:1px solid var(--ln);padding:28px 0;color:var(--mu);font-size:.85rem;text-align:center}
+.rv{opacity:0;transform:translateY(22px);transition:.7s}.rv.in{opacity:1;transform:none}
+.nl{animation:fl 6s ease-in-out infinite}
+@keyframes fl{50%{transform:translateY(-8px)}}
+@keyframes dash{to{stroke-dashoffset:-24}}
+.ln{stroke-dasharray:4 8;animation:dash 2s linear infinite}
+@media(max-width:860px){.hg,.cg,.g3,.gov{grid-template-columns:1fr}.links{display:none}section{padding:60px 0}.hero{padding-top:110px}.two{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<nav><div class="w"><a href="#home" class="logo">NEXA<b> AI</b></a>
+<div class="links"><a href="#solucoes">Soluções</a><a href="#vitrine">Vitrine</a><a href="#community">Community</a><a href="#metodologia">Metodologia</a><a href="#governanca">Governança</a><a href="#sobre">Sobre</a></div>
+<a href="#contato" class="btn pri sm">Conversar</a></div></nav>
+
+<section class="hero" id="home"><div class="w hg">
+<div><div class="eye">IA aplicada aos negócios</div>
+<h1>Transforme o potencial da IA em <span class="g">resultados para o seu negócio.</span></h1>
+<p class="sub mu">Aprenda, aplique e evolua com inteligência artificial. Desenvolvemos pessoas, otimizamos processos e ajudamos empresas a inovar com segurança e responsabilidade.</p>
+<div class="row"><a href="#solucoes" class="btn pri">Conheça nossas soluções</a><a href="#community" class="btn">Explore a NEXA Community</a></div></div>
+<svg viewBox="0 0 400 340" class="nl" aria-label="Rede de aplicações conectadas">
+<g stroke="#287BFF" stroke-width="1.4" fill="none" class="ln"><path d="M200 170L70 70M200 170L330 60M200 170L60 260M200 170L340 270M200 170L200 30M70 70L200 30L330 60M60 260L340 270"/></g>
+<circle cx="200" cy="170" r="46" fill="#101827" stroke="#00E5FF" stroke-width="1.5"/><text x="200" y="176" text-anchor="middle" fill="#F4F7FF" font-family="Manrope" font-weight="800" font-size="18">NEXA</text>
+<g font-family="Manrope" font-size="11" fill="#F4F7FF" text-anchor="middle">
+<g><rect x="30" y="50" width="80" height="40" rx="10" fill="#101827" stroke="#287BFF"/><text x="70" y="75">Finanças</text></g>
+<g><rect x="290" y="40" width="80" height="40" rx="10" fill="#101827" stroke="#865BFF"/><text x="330" y="65">Comercial</text></g>
+<g><rect x="20" y="240" width="80" height="40" rx="10" fill="#101827" stroke="#00E5FF"/><text x="60" y="265">Documentos</text></g>
+<g><rect x="300" y="250" width="80" height="40" rx="10" fill="#101827" stroke="#287BFF"/><text x="340" y="275">Planilhas</text></g>
+<g><rect x="160" y="10" width="80" height="40" rx="10" fill="#101827" stroke="#865BFF"/><text x="200" y="35">Dados</text></g></g></svg>
+</div>
+<div class="w grid g3 rv">
+<div class="card"><div class="num">01</div><h3>Diagnosticar oportunidades</h3><p class="mu">Entender onde a IA gera valor.</p></div>
+<div class="card"><div class="num">02</div><h3>Desenvolver capacidades</h3><p class="mu">Pessoas preparadas para aplicar.</p></div>
+<div class="card"><div class="num">03</div><h3>Evoluir continuamente</h3><p class="mu">Aprender em comunidade.</p></div></div></section>
+
+<section id="solucoes"><div class="w rv"><div class="eye">Nossas soluções</div><h2>Três pilares para sua jornada com IA</h2>
+<div class="grid g3">
+<div class="card"><div class="num">NEXA SCAN · Diagnosticar</div><h3 style="margin:8px 0">Descubra onde a IA pode transformar seu negócio.</h3><ul class="ck"><li>Diagnóstico de maturidade em IA</li><li>Mapeamento de processos</li><li>Identificação de oportunidades</li><li>Avaliação de riscos</li><li>Plano de implementação</li></ul><a href="#contato" class="btn sm" data-i="NEXA Scan">Solicitar diagnóstico</a></div>
+<div class="card"><div class="num">NEXA GUIDE · Desenvolver</div><h3 style="margin:8px 0">Aprenda a aplicar IA na prática.</h3><ul class="ck"><li>Consultorias e treinamentos corporativos</li><li>Capacitação de equipes</li><li>Implementação de aplicações</li><li>Automação de processos</li><li>Diretrizes de uso responsável</li></ul><a href="#contato" class="btn sm" data-i="NEXA Guide">Conhecer programas</a></div>
+<div class="card"><div class="num">NEXA COMMUNITY · Evoluir</div><h3 style="margin:8px 0">Aprender, compartilhar e crescer com IA.</h3><ul class="ck"><li>Comunidade de aprendizagem</li><li>Conteúdos exclusivos</li><li>Encontros e workshops</li><li>Biblioteca de ferramentas</li><li>Troca de experiências</li></ul><a href="#community" class="btn sm">Conhecer a comunidade</a></div></div></div></section>
+
+<section id="vitrine"><div class="w rv"><div class="eye">Vitrine de soluções</div><h2>IA aplicada ao seu negócio</h2>
+<p class="mu" style="margin-top:10px;max-width:640px">Exemplos iniciais do portfólio. Conteúdos demonstrativos, ainda sem implementações comprovadas, preços ou resultados.</p>
+<div class="chips" id="chips"></div><div class="grid g3" id="prods"></div></div></section>
+
+<section id="community" class="comm"><div class="w cg rv">
+<div><div class="eye">NEXA Community</div><h2>Você não precisa descobrir <span class="g">tudo sozinho.</span></h2>
+<p class="mu" style="margin:16px 0">Aprenda com especialistas, compartilhe experiências e descubra novas possibilidades de aplicação da inteligência artificial.</p>
+<ul class="ck"><li>Trilhas de aprendizagem e projetos práticos</li><li>Empreendedores e profissionais</li><li>Biblioteca de ferramentas e materiais exclusivos</li><li>Encontros, eventos e estudos de caso</li></ul>
+<a href="#contato" class="btn pri" data-i="NEXA Community">Quero fazer parte</a></div>
+<div class="app"><div class="bar"><i></i><i></i><i></i></div><div class="ag">
+<div><b>Trilha atual</b>IA para finanças · módulo 2 de 5</div><div><b>Próximo encontro</b>Workshop ao vivo · data a definir</div>
+<div><b>Biblioteca</b>Prompts, modelos e planilhas</div><div><b>Discussões</b>“Como automatizar relatórios?”</div></div>
+<p class="mu" style="font-size:.72rem;margin-top:10px">Prévia ilustrativa. Plataforma de membros em preparação.</p></div></div></section>
+
+<section id="metodologia"><div class="w rv"><div class="eye">Nossa metodologia</div><h2>Como a NEXA trabalha</h2>
+<div class="tl" id="tl"></div><div class="card" id="tlt"></div>
+<p class="mu" style="margin-top:20px;max-width:680px">Nossa governança é educativa, participativa e centrada nas pessoas. A IA não é um mecanismo de vigilância: capacitamos as pessoas a entender riscos, usar a tecnologia com autonomia e contribuir para a inovação.</p></div></section>
+
+<section id="governanca"><div class="w rv"><div class="eye">Governança responsável</div><h2>Inovar com liberdade exige conhecimento e responsabilidade.</h2>
+<div class="gov"><div><b>Privacidade e dados</b><span>Proteção desde o início.</span></div><div><b>Transparência</b><span>Clareza sobre como a IA é usada.</span></div><div><b>Diretrizes de uso</b><span>Regras simples e compreensíveis.</span></div><div><b>Capacitação</b><span>Conhecimento como base.</span></div><div><b>Riscos proporcionais</b><span>Gestão adequada a cada caso.</span></div><div><b>Autonomia</b><span>Colaboradores no centro.</span></div></div></div></section>
+
+<section id="sobre"><div class="w rv"><div class="eye">Sobre a NEXA AI</div><h2>Conhecimento em aplicações práticas e responsáveis.</h2>
+<div class="grid g3"><div class="card"><h3>Missão</h3><p class="mu" style="margin-top:8px">Aproximar a IA das pessoas e dos negócios, transformando conhecimento em aplicações práticas e responsáveis.</p></div>
+<div class="card"><h3>Visão</h3><p class="mu" style="margin-top:8px">Contribuir para um ambiente empresarial em que a IA seja acessível, compreendida e usada para gerar valor.</p></div>
+<div class="card"><h3>Valores</h3><p class="mu" style="margin-top:8px">Inovação, conhecimento, colaboração, transparência, responsabilidade e desenvolvimento humano.</p></div></div></div></section>
+
+<section id="contato"><div class="w rv" style="max-width:680px"><div class="eye">Contato</div><h2>Vamos descobrir o que a IA pode fazer pelo seu negócio?</h2>
+<form id="f"><div class="two"><input name="nome" placeholder="Nome" required><input name="empresa" placeholder="Empresa"></div>
+<input name="email" type="email" placeholder="E-mail" required>
+<select name="area" id="area"><option value="">Área de interesse</option><option>NEXA Scan</option><option>NEXA Guide</option><option>NEXA Community</option><option>Vitrine de soluções</option></select>
+<textarea name="msg" rows="4" placeholder="Mensagem"></textarea>
+<button class="btn pri" type="submit">Conversar com a NEXA</button><p class="mu" id="fm" style="font-size:.85rem"></p></form></div></section>
+<footer>© NEXA AI · Site em construção: conteúdos de demonstração</footer>
+
+<div class="modal" id="m"><div class="mb"><div class="row" style="justify-content:space-between"><span class="tag" id="mc"></span><button class="btn sm" id="mx">Fechar</button></div><h3 id="mt"></h3>
+<div class="vid" id="mv"></div><p class="mu" id="md"></p><div class="row" style="margin-top:16px"><a href="#contato" class="btn pri sm" id="mi">Tenho interesse</a></div></div></div>
+
+<script>
+// Integrações futuras: preencher para ativar
+const CONFIG={whatsapp:"",formEndpoint:""};
+const P=[
+{n:"IA + Power BI",c:"Inteligência Artificial",p:"Indicadores difíceis de interpretar.",d:"Aplicação de IA em análises de dados e apoio à construção de análises gerenciais.",b:["Interpretação de indicadores","Apoio a análises gerenciais"],v:""},
+{n:"Dashboard Financeiro",c:"Finanças",p:"Pouca visibilidade do caixa.",d:"Fluxo de caixa, receitas e despesas, indicadores e análise de desempenho.",b:["Fluxo de caixa","Visão gerencial"],v:""},
+{n:"Dashboard Comercial",c:"Comercial",p:"Vendas sem acompanhamento claro.",d:"Vendas, desempenho de vendedores, conversão e ticket médio.",b:["Conversão","Ticket médio"],v:""},
+{n:"Automação Inteligente",c:"Automação",p:"Tarefas administrativas repetitivas.",d:"Organização de documentos e integração entre planilhas e ferramentas.",b:["Menos retrabalho","Integração de planilhas"],v:""},
+{n:"IA para Gestão",c:"Gestão",p:"Decisões sem apoio de informação.",d:"Assistentes de IA, análise de documentos e organização de processos.",b:["Apoio à decisão","Análise de documentos"],v:""},
+{n:"Capacitação em IA",c:"Produtividade",p:"Equipes sem preparo para usar IA.",d:"Treinamentos, workshops e aplicações práticas por departamento.",b:["Workshops","Competências por área"],v:""}];
+const cats=["Todos","Finanças","Comercial","Gestão","Produtividade","Automação","Inteligência Artificial"];
+const $=s=>document.querySelector(s);
+function mock(i){return '<div class="mock">'+[40,65,50,85,60,95].map((h,k)=>'<i style="height:'+((h+i*7*(k%2?1:-1)+100)%60+30)+'%"></i>').join('')+'</div>'}
+function render(f){$("#prods").innerHTML=P.map((x,i)=>(f==="Todos"||x.c===f)?'<div class="card">'+mock(i)+'<span class="tag">'+x.c+'</span><span class="ex">Exemplo</span><h3>'+x.n+'</h3><p class="mu" style="margin:6px 0;font-size:.9rem">'+x.p+'</p><ul class="ck">'+x.b.map(t=>'<li>'+t+'</li>').join('')+'</ul><div class="row"><button class="btn sm" data-d="'+i+'">Ver demonstração</button><a href="#contato" class="btn sm" data-i="'+x.n+'">Tenho interesse</a></div></div>':'').join('')||'<p class="mu">Nenhuma solução de exemplo nesta categoria ainda.</p>'}
+$("#chips").innerHTML=cats.map((c,i)=>'<button class="chip'+(i?'':' on')+'">'+c+'</button>').join('');
+$("#chips").onclick=e=>{if(!e.target.classList.contains("chip"))return;document.querySelectorAll(".chip").forEach(x=>x.classList.remove("on"));e.target.classList.add("on");render(e.target.textContent)};
+render("Todos");
+function vid(u){const y=u.match(/(?:youtu\.be\/|v=)([\w-]{11})/);return y?'<iframe src="https://www.youtube.com/embed/'+y[1]+'" allowfullscreen></iframe>':'<video src="'+u+'" controls></video>'}
+document.addEventListener("click",e=>{const d=e.target.closest("[data-d]");if(d){const x=P[d.dataset.d];$("#mc").textContent=x.c;$("#mt").textContent=x.n;$("#md").textContent=x.d;$("#mv").innerHTML=x.v?vid(x.v):'Espaço reservado para o vídeo de demonstração.<br>Defina o campo “v” desta solução com um link do YouTube ou arquivo de vídeo.';$("#mi").dataset.i=x.n;$("#m").classList.add("open")}
+const i=e.target.closest("[data-i]");if(i){$("#area").value=i.dataset.i==="NEXA Scan"||i.dataset.i==="NEXA Guide"||i.dataset.i==="NEXA Community"?i.dataset.i:"Vitrine de soluções";$("#m").classList.remove("open")}
+if(e.target.id==="mx"||e.target.id==="m")$("#m").classList.remove("open")});
+const S=[["Entendemos o negócio","Conversamos para conhecer sua realidade, rotina e objetivos."],["Identificamos oportunidades","Mapeamos processos e priorizamos onde a IA agrega valor."],["Desenvolvemos pessoas","Capacitamos equipes para usar a IA com autonomia e consciência de riscos."],["Implementamos soluções","Aplicamos soluções práticas, com diretrizes claras de uso responsável."],["Acompanhamos a evolução","Apoiamos o aprendizado contínuo, inclusive pela NEXA Community."]];
+$("#tl").innerHTML=S.map((s,i)=>'<button data-s="'+i+'"><b>0'+(i+1)+'</b>'+s[0]+'</button>').join('');
+function step(i){document.querySelectorAll("#tl button").forEach((b,k)=>b.classList.toggle("on",k===i));$("#tlt").innerHTML='<h3>'+S[i][0]+'</h3><p class="mu" style="margin-top:6px">'+S[i][1]+'</p>'}
+$("#tl").onclick=e=>{const b=e.target.closest("button");if(b)step(+b.dataset.s)};step(0);
+$("#f").onsubmit=e=>{e.preventDefault();const d=Object.fromEntries(new FormData(e.target));
+if(CONFIG.whatsapp){open("https://wa.me/"+CONFIG.whatsapp+"?text="+encodeURIComponent("Olá, sou "+d.nome+" ("+d.empresa+"). Interesse: "+d.area+". "+d.msg));return}
+$("#fm").textContent="Formulário em preparação: a integração com WhatsApp e e-mail será ativada em breve."};
+document.querySelectorAll(".card").forEach(c=>c.addEventListener("mousemove",e=>{const r=c.getBoundingClientRect();c.style.setProperty("--x",(e.clientX-r.left)+"px");c.style.setProperty("--y",(e.clientY-r.top)+"px")}));
+const io=new IntersectionObserver(es=>es.forEach(x=>x.isIntersecting&&x.target.classList.add("in")),{threshold:.1});
+document.querySelectorAll(".rv").forEach(x=>io.observe(x));
+</script>
+</body>
+</html>
